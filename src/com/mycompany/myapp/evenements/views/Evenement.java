@@ -1,18 +1,11 @@
 package com.mycompany.myapp.evenements.views;
 
 import com.codename1.capture.Capture;
-import com.codename1.ext.filechooser.FileChooser;
-import com.codename1.io.File;
-import com.codename1.io.FileSystemStorage;
-import com.codename1.io.MultipartRequest;
-import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
-import com.codename1.ui.Display;
 import com.codename1.ui.layouts.FlowLayout;
 import com.mycompany.myapp.Utilisateur;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.services.EvenementService;
-import java.io.IOException;
 import java.util.Date;
 
 public class Evenement extends BaseEvent{
@@ -25,12 +18,22 @@ public class Evenement extends BaseEvent{
         
         setLayout(new FlowLayout(CENTER, CENTER));
         Button fileB = new Button("+");
+        Utilisateur user1 = new Utilisateur();
+        user1.setId(1);
+        Utilisateur user2 = new Utilisateur();
+        user2.setId(5);
+        
+        com.mycompany.myapp.evenements.entites.Evenement ev2 = new com.mycompany.myapp.evenements.entites.Evenement
+        ("test java ", new Date(), "", "hello ", 0, "test addresse ", 10, user1);
+        ev2.addCategorie(new Categorie(2,"tes11"));
+        ev2.setId(31);
+        es.inscriEvent(ev2, user2);
+            
+        es.deleteEvent(ev2);
         fileB.addActionListener((e)->{
             String file = Capture.capturePhoto();
-            Utilisateur user1 = new Utilisateur();
-            user1.setId(5);
             com.mycompany.myapp.evenements.entites.Evenement ev = new com.mycompany.myapp.evenements.entites.Evenement
-            ("test java", new Date(), "", "", 403.5, "test addresse", 10, user1);
+            ("test java", new Date(), "", "testing !", 0, "test addresse", 10, user1);
             //ev.addCategorie(new Categorie(5,"tes11"));
             //ev.addCategorie(new Categorie(3,"tes22"));
             int eventId = es.addEvent(ev);

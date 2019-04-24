@@ -50,6 +50,41 @@ public class EvenementService {
         NetworkManager.getInstance().addToQueueAndWait(conF);
         return Integer.parseInt(new String(conF.getResponseData()));
     }
+
+    public boolean updateEvent(Evenement event){
+        ConnectionRequest conF = new ConnectionRequest();
+        List<String> idCat = new ArrayList<>();
+        conF.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/update/"+event.getId());
+        conF.setPost(true);
+        conF.addArgument("titre", event.getTitre());
+        conF.addArgument("adresse", event.getAdresse());
+        if (event.getDescription() != null && !event.getDescription().isEmpty())    
+            conF.addArgument("description", event.getDescription());
+        conF.addArgument("date", event.getDate().toString());
+        if (event.getListCategories().size()!=0){
+            for (Categorie c : event.getListCategories()){
+                idCat.add(""+c.getId());
+            }
+            String [] catList = new String[idCat.size()]; 
+            idCat.toArray(catList);
+            conF.addArgument("categorie[]", catList);
+        }
+        NetworkManager.getInstance().addToQueueAndWait(conF);
+        return new String (conF.getResponseData()).equals("yes") ?  true : false;  
+    }
+
+    public boolean deleteEvent(Evenement event){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/delete/"+event.getId());
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return new String(con.getResponseData()).equals("yes")? true:false;
+    }
+    
+    public String inscriEvent(Evenement event, Utilisateur u){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/inscri/"+event.getId()+"/"+u.getId());
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return new String(con.getResponseData());
+    }
+    
     
     public Evenement getEventById(int id){
         Evenement evenement ;
