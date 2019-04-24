@@ -5,6 +5,7 @@ import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.codename1.io.CharArrayReader;
+import com.codename1.io.MultipartRequest;
 import com.mycompany.myapp.Utilisateur;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Inscription;
@@ -22,18 +23,19 @@ public class EvenementService {
         con = new ConnectionRequest();
     }
     
+    
     public int addEvent(Evenement event){
-        con = new ConnectionRequest();
+        ConnectionRequest conF = new ConnectionRequest();
         List<String> idCat = new ArrayList<>();
-        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/add/"+event.getUtilisateur().getId());
-        con.setPost(true);
-        con.addArgument("titre", event.getTitre());
-        con.addArgument("adresse", event.getAdresse());
-        con.addArgument("description", event.getDescription());
-        con.addArgument("date", event.getDate().toString());
-        con.addArgument("prix", ""+event.getPrix());
-        con.addArgument("billets", ""+event.getBillets_restants());
-        con.addArgument("image", ""+event.getUrl_image());
+        conF.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/add/"+event.getUtilisateur().getId());
+        conF.setPost(true);
+        conF.addArgument("titre", event.getTitre());
+        conF.addArgument("adresse", event.getAdresse());
+        if (event.getDescription() != null && !event.getDescription().isEmpty())    
+            conF.addArgument("description", event.getDescription());
+        conF.addArgument("date", event.getDate().toString());
+        conF.addArgument("prix", ""+event.getPrix());
+        conF.addArgument("billets", ""+event.getBillets_restants());
         if (event.getListCategories().size()!=0){
             for (Categorie c : event.getListCategories()){
                 idCat.add(""+c.getId());
@@ -43,10 +45,10 @@ public class EvenementService {
             for (String test : idCat){
                 System.out.println(test);
             }
-            con.addArgument("categorie[]", catList);
+            conF.addArgument("categorie[]", catList);
         }
-        NetworkManager.getInstance().addToQueueAndWait(con);
-        return Integer.parseInt(new String(con.getResponseData()));
+        NetworkManager.getInstance().addToQueueAndWait(conF);
+        return Integer.parseInt(new String(conF.getResponseData()));
     }
     
     public Evenement getEventById(int id){
@@ -145,5 +147,21 @@ public class EvenementService {
             ex.printStackTrace();
         }
         return evenement;        
+    }
+
+    public String uploadImage(String file, int id) {
+         MultipartRequest cr = new MultipartRequest();
+                
+        cr.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/addImage/"+id);
+        cr.setPost(true);
+        String mime="image/jpeg";
+        try {
+            cr.addData("file", file, "image/jpeg");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        cr.setFilename("file", "MyImage.jpg");
+        NetworkManager.getInstance().addToQueueAndWait(cr);
+        return new String(cr.getResponseData());
     }
 }

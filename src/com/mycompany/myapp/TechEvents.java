@@ -46,7 +46,8 @@ public class TechEvents {
             current.show();
             return;
         }
-        //new Loggin(theme).show();
+        new Loggin(theme).show();
+        /*
         Utilisateur user1 = new Utilisateur();
         user1.setId(5);
         Evenement ev = new Evenement("test java", new Date(), "", "", 403.5, "test addresse", 10, user1);
@@ -54,6 +55,7 @@ public class TechEvents {
         //ev.addCategorie(new Categorie(3,"tes22"));
         EvenementService es = new EvenementService();
         System.out.println(es.addEvent(ev));
+        */
     }
 
     public void stop() {
