@@ -18,7 +18,6 @@ import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
-import java.util.Date;
 import java.util.List;
 
 public class AddEvent extends BaseEvent{
@@ -82,7 +81,11 @@ public class AddEvent extends BaseEvent{
                 if (eventId != 0){
                     if (file != null)
                         es.uploadImage(file, eventId);
-                    Dialog.show("success", "evenement ajouté", "ok", null);
+                    if (Dialog.show("success", "evenement ajouté", "ok", null)){
+                        VarGlobales.setEventId(eventId);
+                        new OneEvent().getForm().show();
+                    }
+                        
                 }
                 
             }
