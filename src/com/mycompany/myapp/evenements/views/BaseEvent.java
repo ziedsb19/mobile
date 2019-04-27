@@ -14,7 +14,9 @@ public class BaseEvent {
             EvenementsView ev = new EvenementsView();
             ev.getForm().show();
         });
-        tb.addMaterialCommandToOverflowMenu("Ma bibiliotheque", FontImage.MATERIAL_LIBRARY_BOOKS, (e)->{});
+        tb.addMaterialCommandToOverflowMenu("Ma bibiliotheque", FontImage.MATERIAL_LIBRARY_BOOKS, (e)->{
+            new Library().getForm().show();
+        });
         tb.addMaterialCommandToOverflowMenu("ajouter votre evenemement", FontImage.MATERIAL_ADD_BOX, (e)->{
             AddEvent addEvent = new AddEvent();
             addEvent.getForm().show();

@@ -2,62 +2,83 @@ package com.mycompany.myapp.evenements.views;
 
 import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
+import static com.codename1.ui.CN.CENTER;
 import com.codename1.ui.Container;
-import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.RadioButton;
-import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
+import com.codename1.ui.plaf.Style;
 import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
-import com.sun.prism.paint.Color;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class EvenementsView extends BaseEvent {
+public class Library  extends BaseEvent{
     
-    private Form form ;
+    private Form form ; 
     private Toolbar tb;
     private EvenementService es;
-    private List<Evenement> listEvenements;
+    private List<Evenement> listEvenementsOrg;
+    private List<Evenement> listEvenementsInscris;
     private EncodedImage enc;
     private String urlImage = "http://localhost/pi/tech_events/web/images/evenements/";
     private Container evenements;
-    private TextField searchBar;
     
-    public EvenementsView(){
-        form = new Form();
-        es = new EvenementService();
-        listEvenements = es.getEvents();
+    public Library(){
         setForm();
-        setEvents(listEvenements);
-        Container filterContainer = new Container(new GridLayout(1, 2));
-        RadioButton gratuit = new RadioButton("gratuit");
-        RadioButton payant = new RadioButton("payant");
-        filterContainer.addAll(gratuit, payant);
-        searchBar = new TextField(null, "chercher evenement");
-        form.addAll(searchBar);
-        form.add(evenements);
+        es = new EvenementService();
+        Label titre_bib = new Label("evenements organisés :");
+        titre_bib.setUIID("event_titre");
+        evenements = new Container(BoxLayout.y());
+        listEvenementsOrg = es.getEventsOrganises(VarGlobales.getUtilisateur().getId());
+        listEvenementsInscris = es.getEventsInscris(VarGlobales.getUtilisateur().getId());
+        setEvents(listEvenementsOrg);
+        Container south = new Container (new GridLayout(1, 2));
+        Container buttOrg = new Container(new FlowLayout(CENTER));
+        Label org_label = new Label(FontImage.createMaterial(FontImage.MATERIAL_BOOKMARK, new Style())); 
+        buttOrg.add(org_label);
+        org_label.addPointerPressedListener((l)->{
+            titre_bib.setText("evenements organisés :");
+            evenements.removeAll();
+            setEvents(listEvenementsOrg);
+            form.refreshTheme();
+        });
+        buttOrg.setLeadComponent(org_label);
+        Container buttInscri = new Container(new FlowLayout(CENTER));
+        Label inscri_label = new Label(FontImage.createMaterial(FontImage.MATERIAL_HOME, new Style()));
+        inscri_label.addPointerPressedListener((l)->{
+            titre_bib.setText("evenements inscris :");
+            evenements.removeAll();
+            setEvents(listEvenementsInscris);
+            form.refreshTheme();
+        });
+        buttInscri.add(inscri_label);
+        buttInscri.setLeadComponent(inscri_label);
+        south.addAll(buttOrg, buttInscri);
+        Container center_con = new Container(BoxLayout.y());
+        center_con.addAll(titre_bib,evenements);
+        center_con.setScrollableY(true);
+        form.add(BorderLayout.SOUTH, south);
+        form.add(BorderLayout.CENTER, center_con);
     }
     
     public void setForm(){    
-        form.setTitle("evenements");
-        form.setLayout(BoxLayout.y());
+        form = new Form("bibliotheque", new BorderLayout());
+        form.setScrollable(false);
         tb = form.getToolbar();
         addToolBar(tb);
-        evenements = new Container(BoxLayout.y());
     }
     
     public void setEvents(List<Evenement> listEvenements){
@@ -122,5 +143,5 @@ public class EvenementsView extends BaseEvent {
     
     public Form getForm(){
         return form;
-    } 
+    }
 }

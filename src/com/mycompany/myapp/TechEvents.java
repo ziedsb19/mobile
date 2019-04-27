@@ -42,7 +42,7 @@ public class TechEvents {
             return;
         }
         Utilisateur u1 = new Utilisateur();
-        u1.setId(5);
+        u1.setId(1);
         VarGlobales.setUtilisateur(u1);
         EvenementsView ev = new EvenementsView();
         ev.getForm().show();

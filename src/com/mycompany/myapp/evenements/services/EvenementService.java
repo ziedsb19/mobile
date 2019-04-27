@@ -103,6 +103,22 @@ public class EvenementService {
         return events;
     }
     
+    public List<Evenement> getEventsOrganises(int id){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/organises/"+id);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        String data = new String(con.getResponseData());
+        List<Evenement> events = parseElements(data);
+        return events;
+    }    
+    
+    public List<Evenement> getEventsInscris(int id){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/inscris/"+id);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        String data = new String(con.getResponseData());
+        List<Evenement> events = parseElements(data);
+        return events;
+    }    
+    
     public List<Categorie> getCategories(){
         List<Categorie> categories ;
         con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/categories");
