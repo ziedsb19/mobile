@@ -8,8 +8,6 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.TextField;
 import com.mycompany.myapp.evenements.views.EvenementsView;
 
 public class TechEvents {
@@ -44,8 +42,8 @@ public class TechEvents {
         Utilisateur u1 = new Utilisateur();
         u1.setId(1);
         VarGlobales.setUtilisateur(u1);
-        EvenementsView ev = new EvenementsView();
-        ev.getForm().show();
+        VarGlobales.setTheme(theme);
+        new Loggin().getForm().show();
     }
 
     public void stop() {

@@ -152,6 +152,9 @@ public class OneEvent extends BaseEvent{
         if (evenement.getUtilisateur().getId() == VarGlobales.getUtilisateur().getId()){
             priv = new Container (new GridLayout(1, 2));
             Button update = new Button("update");
+            update.addActionListener((l)->{
+                new UpdateEvent().getForm().show();
+            });
             Button delete = new Button("delete");
             delete.addActionListener((l)->{
                 if (es.deleteEvent(evenement)){

@@ -3,7 +3,7 @@ package com.mycompany.myapp.evenements.views;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Toolbar;
-import com.codename1.ui.plaf.Style;
+import com.mycompany.myapp.Loggin;
 
 public class BaseEvent {
     
@@ -20,7 +20,10 @@ public class BaseEvent {
         tb.addMaterialCommandToOverflowMenu("ajouter votre evenemement", FontImage.MATERIAL_ADD_BOX, (e)->{
             AddEvent addEvent = new AddEvent();
             addEvent.getForm().show();
-        });    
+        });
+        tb.addMaterialCommandToOverflowMenu("deconnexion", FontImage.MATERIAL_LOCK, (e)->{
+            new Loggin().getForm().show();
+        });
     }
     
 }
