@@ -127,6 +127,14 @@ public class EvenementService {
         return categories;
     }
     
+    public boolean isSaved(Evenement e, int id){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/isSaved/"+e.getId()+"/"+id);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        if (new String(con.getResponseData()).equals("yes"))
+            return true;
+        return false;
+    }
+    
     private  List<Evenement> parseElements(String data){
      List<Evenement> events = new ArrayList();
      JSONParser j = new JSONParser();
@@ -237,5 +245,6 @@ public class EvenementService {
             ex.printStackTrace();
         }
         return categories;
+       
     }
 }

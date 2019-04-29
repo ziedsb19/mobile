@@ -110,9 +110,9 @@ public class Library  extends BaseEvent{
             else
                 adresseText = e.getAdresse();
             SpanLabel adresse = new SpanLabel(adresseText);
-            adresse.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL));
-            SpanLabel date = new SpanLabel("Date: "+dateF.format(new Date()));
-            date.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL));
+            adresse.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_ITALIC, Font.SIZE_SMALL));
+            SpanLabel date = new SpanLabel("Date: "+dateF.format(e.getDate()));
+            date.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_ITALIC, Font.SIZE_SMALL));
             String categories = "";
             for (Categorie c : e.getListCategories()){
                 categories += " # "+c.getName();

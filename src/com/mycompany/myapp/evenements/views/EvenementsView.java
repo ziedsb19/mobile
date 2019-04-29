@@ -2,8 +2,9 @@ package com.mycompany.myapp.evenements.views;
 
 import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.ui.Button;
+import com.codename1.ui.ComboBox;
 import com.codename1.ui.Container;
-import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
 import com.codename1.ui.Form;
@@ -17,13 +18,13 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
+import com.codename1.ui.spinner.Picker;
 import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
-import com.sun.prism.paint.Color;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EvenementsView extends BaseEvent {
@@ -36,20 +37,115 @@ public class EvenementsView extends BaseEvent {
     private String urlImage = "http://localhost/pi/tech_events/web/images/evenements/";
     private Container evenements;
     private TextField searchBar;
+    private Container topFilter;
+    private List<Categorie> listCategories;
     
     public EvenementsView(){
         form = new Form();
         es = new EvenementService();
         listEvenements = es.getEvents();
+        listCategories = es.getCategories();
         setForm();
         setEvents(listEvenements);
         Container filterContainer = new Container(new GridLayout(1, 2));
         RadioButton gratuit = new RadioButton("gratuit");
         RadioButton payant = new RadioButton("payant");
         filterContainer.addAll(gratuit, payant);
-        searchBar = new TextField(null, "chercher evenement");
-        form.addAll(searchBar);
+        topFilter = new Container(BoxLayout.y()); 
+        setFilter();
+        form.addAll(topFilter);
         form.add(evenements);
+    }
+    
+    public void setFilter(){
+        Button filtrerShow = new Button("Filtrer");
+        filtrerShow.addActionListener((l)->{
+            topFilter.removeAll();
+            TextField organisateur = new TextField(null,"organisateur du l'event");
+            Picker date = new Picker();
+            date.setDate(null);
+            ComboBox categories = new ComboBox();
+            categories.addItem("pas de choix");
+            for (Categorie c : listCategories){
+                categories.addItem(c.getName());
+            }
+            RadioButton gratuit = new RadioButton("Gratuit");
+            RadioButton payant = new RadioButton("payant");
+            Container prix_cont = new Container(new GridLayout(1,2));
+            payant.addActionListener((ep)->{
+                if (gratuit.isSelected())
+                    gratuit.setSelected(false);
+            });
+            gratuit.addActionListener((ep)->{
+                if (payant.isSelected())
+                    payant.setSelected(false);
+            });
+            prix_cont.addAll(gratuit,payant);
+            Button appliquer = new Button("appliquer");
+            Button close = new Button("reset");
+            close.addActionListener((el)->{
+                topFilter.removeAll();
+                evenements.removeAll();
+                setEvents(listEvenements);
+                setFilter();
+                form.revalidate();
+            });
+            appliquer.addActionListener((el2)->{
+                List<Evenement> filtredEvents = listEvenements;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                if (!organisateur.getText().isEmpty())
+                {
+                    List<Evenement> tomponList = new ArrayList<>();
+                    for (Evenement e : filtredEvents){
+                        if (e.getUtilisateur().getUsername().equals(organisateur.getText()))
+                            tomponList.add(e);
+                    }
+                    filtredEvents = tomponList;
+                }
+                if (date.getDate() != null){
+                    List<Evenement> tomponList = new ArrayList<>();
+                    for (Evenement e : filtredEvents){
+                        if (dateFormat.format(date.getDate()).equals(dateFormat.format(e.getDate())))
+                            tomponList.add(e);
+                    }
+                    filtredEvents = tomponList;
+                }
+                if (gratuit.isSelected()){
+                    List<Evenement> tomponList = new ArrayList<>();
+                    for (Evenement e : filtredEvents){
+                        if (e.getPrix()==0)
+                            tomponList.add(e);
+                    }
+                    filtredEvents = tomponList;
+                }
+                if (payant.isSelected()){
+                    List<Evenement> tomponList = new ArrayList<>();
+                    for (Evenement e : filtredEvents){
+                        if (e.getPrix()!=0)
+                            tomponList.add(e);
+                    }
+                    filtredEvents = tomponList;
+                }                
+                if (categories.getSelectedIndex()!=0){
+                    List<Evenement> tomponList = new ArrayList<>();
+                    for (Evenement e : filtredEvents){
+                        if (e.getListCategories().contains(listCategories.get(categories.getSelectedIndex()-1)))
+                        tomponList.add(e);
+                    }
+                    filtredEvents = tomponList;
+                }                
+
+                evenements.removeAll();
+                setEvents(filtredEvents);
+                form.revalidate();
+            });
+            Container butt_cont = new Container(new GridLayout(1, 2));
+            butt_cont.addAll(appliquer, close);
+            topFilter.addAll(new Label("organisateur : "),organisateur,new Label("date : "), date,new Label("prix :"),
+                    prix_cont,new Label("categories :") ,categories,butt_cont);
+            form.revalidate();
+        });
+        topFilter.add(filtrerShow);
     }
     
     public void setForm(){    
@@ -89,9 +185,9 @@ public class EvenementsView extends BaseEvent {
             else
                 adresseText = e.getAdresse();
             SpanLabel adresse = new SpanLabel(adresseText);
-            adresse.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL));
-            SpanLabel date = new SpanLabel("Date: "+dateF.format(new Date()));
-            date.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL));
+            adresse.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_ITALIC, Font.SIZE_SMALL));
+            SpanLabel date = new SpanLabel("Date: "+dateF.format(e.getDate()));
+            date.getTextAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_ITALIC, Font.SIZE_SMALL));
             String categories = "";
             for (Categorie c : e.getListCategories()){
                 categories += " # "+c.getName();

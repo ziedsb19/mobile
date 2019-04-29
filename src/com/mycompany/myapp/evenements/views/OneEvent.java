@@ -165,7 +165,7 @@ public class OneEvent extends BaseEvent{
             priv.addAll(update, delete);
         }
         else {
-            priv = new Container(new FlowLayout(CENTER, CENTER));
+            priv = new Container(new GridLayout(1, 2));
             Button inscrire = new Button();
             boolean test = false;
             for (Inscription inscri : evenement.getListInscriptions()){
@@ -192,8 +192,12 @@ public class OneEvent extends BaseEvent{
                     }
                 }
             });
-
-            priv.add(inscrire);
+            Button save = new Button();
+            if (es.isSaved(evenement, VarGlobales.getUtilisateur().getId()))
+                save.setText("enlever du fav");
+            else 
+                save.setText("ajouter au fav");
+            priv.addAll(inscrire,save);
         }
         operations.addAll(priv_title,priv);
         form.add(operations);

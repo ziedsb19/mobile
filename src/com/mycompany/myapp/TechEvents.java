@@ -43,7 +43,8 @@ public class TechEvents {
         u1.setId(1);
         VarGlobales.setUtilisateur(u1);
         VarGlobales.setTheme(theme);
-        new Loggin().getForm().show();
+        //new Loggin().getForm().show();
+        new EvenementsView().getForm().show();
     }
 
     public void stop() {
