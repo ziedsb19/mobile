@@ -119,6 +119,14 @@ public class EvenementService {
         return events;
     }    
     
+    public List<Evenement> getEventsFav(int id){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/favoris/"+id);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        String data = new String(con.getResponseData());
+        List<Evenement> events = parseElements(data);
+        return events;
+    }    
+    
     public List<Categorie> getCategories(){
         List<Categorie> categories ;
         con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/categories");
@@ -133,6 +141,12 @@ public class EvenementService {
         if (new String(con.getResponseData()).equals("yes"))
             return true;
         return false;
+    }
+    
+    public boolean save (Evenement e, int id){
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/toggleSaved/"+e.getId()+"/"+id);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return new String(con.getResponseData()).equals("yes")? true : false;
     }
     
     private  List<Evenement> parseElements(String data){

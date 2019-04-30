@@ -73,15 +73,15 @@ public class OneEvent extends BaseEvent{
         else 
             urlImage = urlI+"default.png";
         try {
-            enc = enc.create("/load.png");
-            Image image = URLImage.createToStorage(enc, urlImage, urlImage, URLImage.RESIZE_SCALE_TO_FILL);
+            enc = enc.create("/placeholder9.jpg");
+            Image image = URLImage.createToStorage(enc, urlImage, urlImage, URLImage.RESIZE_SCALE_TO_FILL); 
             iv.setImage(image);
             
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         vtop.addAll(titre);
-        top.addAll(vtop, iv);
+        top.addAll(iv,vtop);
         //*****************************************************************
         SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
         Container middle = new Container(BoxLayout.y());
@@ -195,8 +195,21 @@ public class OneEvent extends BaseEvent{
             Button save = new Button();
             if (es.isSaved(evenement, VarGlobales.getUtilisateur().getId()))
                 save.setText("enlever du fav");
+            
             else 
                 save.setText("ajouter au fav");
+            save.addActionListener((l)->{
+                if (es.save(evenement, VarGlobales.getUtilisateur().getId())){
+                    save.setText("enlever du fav");
+                    Dialog.show("favoris", "evenement ajouté au favoris", "ok", null);
+                    form.revalidate();
+                }
+                else{
+                    save.setText("ajouter au fav");
+                    Dialog.show("favoris", "evenement enleve du favoris", "ok", null);
+                    form.revalidate();
+                }
+            });
             priv.addAll(inscrire,save);
         }
         operations.addAll(priv_title,priv);

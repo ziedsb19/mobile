@@ -818,7 +818,7 @@
         <val key="event_label.fgColor" value="000000" />
         <font key="event_label.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="event_label.transparency" value="0" />
-        <border key="event_titre.border" type="underline"  millimeters="false" thickness="3.0" color="16724889" />
+        <border key="event_titre.border" type="underline"  millimeters="false" thickness="4.0" color="16724889" />
         <val key="event_titre.fgColor" value="0" />
         <font key="event_titre.font" type="ttf" face="0" style="1" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.0" />
         <val key="event_titre.marUnit" value="2,2,2,2" />
