@@ -10,6 +10,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
+import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -49,6 +50,8 @@ public class OneEvent extends BaseEvent{
     
     public void setForm(){
         form = new Form("Details", BoxLayout.y());
+        form.getAllStyles().setBgColor(0xf4f9f4);
+        form.getAllStyles().setOpacity(255);
         tb = form.getToolbar();
         addToolBar(tb);
         tb.addMaterialCommandToLeftBar("retour", FontImage.MATERIAL_ARROW_BACK, (e)->{
@@ -86,6 +89,7 @@ public class OneEvent extends BaseEvent{
         SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
         Container middle = new Container(BoxLayout.y());
         Label titre_middle = new Label("Informations génerales :");
+        FontImage.setMaterialIcon(titre_middle, FontImage.MATERIAL_INFO);
         titre_middle.setUIID("event_titre");
         
         Container userCon = new Container(new FlowLayout(LEFT, CENTER));
@@ -151,18 +155,21 @@ public class OneEvent extends BaseEvent{
         priv_title.setUIID("event_titre");
         if (evenement.getUtilisateur().getId() == VarGlobales.getUtilisateur().getId()){
             priv = new Container (new GridLayout(1, 2));
-            Button update = new Button("update");
+            Button update = new Button(" update ",FontImage.MATERIAL_UPDATE,"update");
+            update.setUIID("secondary_button");
             update.addActionListener((l)->{
                 new UpdateEvent().getForm().show();
             });
-            Button delete = new Button("delete");
+            Button delete = new Button(" delete",FontImage.MATERIAL_DELETE,"delete");
+           
+            delete.setUIID("danger_button");
             delete.addActionListener((l)->{
                 if (es.deleteEvent(evenement)){
                     if (Dialog.show("suppression", "evenement supprimé avec succes ", "ok", null))
                         new EvenementsView().getForm().show();             
                 }
             });
-            priv.addAll(update, delete);
+            priv.addAll(delete, update);
         }
         else {
             priv = new Container(new GridLayout(1, 2));
@@ -174,39 +181,50 @@ public class OneEvent extends BaseEvent{
                     break;
                 }
             }
-            if (test)
-                inscrire.setText("annuler Inscription");                            
-            else 
+            if (test){
+                inscrire.setText("annuler Inscription"); 
+                inscrire.setUIID("primary_outline_button");
+            }
+            else {
                 inscrire.setText("inscrire ");
+                inscrire.setUIID("primary_button");
+            }
             inscrire.addActionListener((l)->{
                 if (es.inscriEvent(evenement, VarGlobales.getUtilisateur()) != null){
                     if (inscrire.getText().equals("annuler Inscription")){
                         Dialog.show("inscription", "vous avez annulez votre inscription", "ok", null);
                         inscrire.setText("inscrire ");
+                        inscrire.setUIID("primary_button");
                         form.revalidate();
                     }
                     else{
                         Dialog.show("inscription", "inscription avec succes", "ok", null);
                         inscrire.setText("annuler Inscription");
+                        inscrire.setUIID("primary_outline_button");
                         form.revalidate();
                     }
                 }
             });
             Button save = new Button();
-            if (es.isSaved(evenement, VarGlobales.getUtilisateur().getId()))
+            if (es.isSaved(evenement, VarGlobales.getUtilisateur().getId())){
                 save.setText("enlever du fav");
-            
-            else 
+                save.setUIID("primary_outline_button");
+            }
+            else {
                 save.setText("ajouter au fav");
+                save.setUIID("primary_button");
+            }
             save.addActionListener((l)->{
                 if (es.save(evenement, VarGlobales.getUtilisateur().getId())){
                     save.setText("enlever du fav");
                     Dialog.show("favoris", "evenement ajouté au favoris", "ok", null);
+                    save.setUIID("primary_outline_button");
                     form.revalidate();
                 }
                 else{
                     save.setText("ajouter au fav");
                     Dialog.show("favoris", "evenement enleve du favoris", "ok", null);
+                    save.setUIID("primary_button");
                     form.revalidate();
                 }
             });

@@ -4,9 +4,15 @@ import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.ComboBox;
+import static com.codename1.ui.Component.BOTTOM;
+import static com.codename1.ui.Component.CENTER;
+import static com.codename1.ui.Component.RIGHT;
+import static com.codename1.ui.Component.TOP;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
@@ -18,6 +24,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
+import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.spinner.Picker;
 import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
@@ -42,6 +49,8 @@ public class EvenementsView extends BaseEvent {
     
     public EvenementsView(){
         form = new Form();
+        Container center_form = new Container(BoxLayout.y());
+        center_form.setScrollableY(true);
         es = new EvenementService();
         listEvenements = es.getEvents();
         listCategories = es.getCategories();
@@ -53,14 +62,47 @@ public class EvenementsView extends BaseEvent {
         filterContainer.addAll(gratuit, payant);
         topFilter = new Container(BoxLayout.y()); 
         setFilter();
-        form.addAll(topFilter);
-        form.add(evenements);
+        TextField searchText = new TextField();
+        searchText.setHidden(true);
+        //*********************************************************
+        Button search = new Button(FontImage.MATERIAL_SEARCH);
+        search.getAllStyles().setPadding(3, 3, 3, 3);
+        Container searchCont = new Container(new FlowLayout(RIGHT, CENTER));
+        searchCont.add(search);
+        searchCont.setWidth(20);
+        Container searchBorder = new Container(new BorderLayout());
+        searchBorder.add(BorderLayout.SOUTH,searchCont);
+        search.addActionListener((l)->{
+            if (searchText.isHidden())
+                searchText.setHidden(false);
+            else {
+                searchText.setHidden(true);
+                evenements.removeAll();
+                setEvents(listEvenements);
+            }
+            form.refreshTheme();
+        });
+        searchText.addDataChangedListener((l,i)->{
+            List<Evenement> tomponList = new ArrayList<>();
+            for (Evenement ev : listEvenements){
+                if (ev.getTitre().toUpperCase().trim().startsWith(searchText.getText().toUpperCase().trim()))
+                    tomponList.add(ev);
+            }
+            evenements.removeAll();
+            setEvents(tomponList);
+            form.revalidate();
+        });
+        //*********************************************************
+        center_form.addAll(topFilter,searchText);
+        center_form.add(evenements);
+        form.add(BorderLayout.CENTER,LayeredLayout.encloseIn(center_form,searchBorder));
     }
     
     public void setFilter(){
         Button filtrerShow = new Button("Filtrer");
         filtrerShow.addActionListener((l)->{
             topFilter.removeAll();
+            topFilter.setUIID("filter_con");
             TextField organisateur = new TextField(null,"organisateur du l'event");
             Picker date = new Picker();
             date.setDate(null);
@@ -82,7 +124,11 @@ public class EvenementsView extends BaseEvent {
             });
             prix_cont.addAll(gratuit,payant);
             Button appliquer = new Button("appliquer");
+            appliquer.setUIID("primary_button");
+            
             Button close = new Button("reset");
+            close.setUIID("primary_outline_button");
+            
             close.addActionListener((el)->{
                 topFilter.removeAll();
                 evenements.removeAll();
@@ -146,11 +192,13 @@ public class EvenementsView extends BaseEvent {
             form.revalidate();
         });
         topFilter.add(filtrerShow);
+        topFilter.setUIID("");
     }
     
     public void setForm(){    
         form.setTitle("evenements");
-        form.setLayout(BoxLayout.y());
+        form.setLayout(new BorderLayout());
+        form.setScrollable(false);
         tb = form.getToolbar();
         addToolBar(tb);
         evenements = new Container(BoxLayout.y());

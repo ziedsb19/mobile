@@ -37,6 +37,10 @@ public class Library  extends BaseEvent{
     private EncodedImage enc;
     private String urlImage = "http://localhost/pi/tech_events/web/images/evenements/";
     private Container evenements;
+    private Label org_label;
+    private Label inscri_label;
+    private Label bookmark_label;
+    private Container center_con;
     
     public Library(){
         setForm();
@@ -50,7 +54,9 @@ public class Library  extends BaseEvent{
         setEvents(listEvenementsOrg);
         Container south = new Container (new GridLayout(1, 3));
         Container buttOrg = new Container(new FlowLayout(CENTER));
-        Label org_label = new Label(FontImage.createMaterial(FontImage.MATERIAL_FOLDER, new Style())); 
+        org_label = new Label();
+        org_label.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_MEDIUM));
+        FontImage.setMaterialIcon(org_label, FontImage.MATERIAL_FOLDER);
         buttOrg.add(org_label);
         org_label.addPointerPressedListener((l)->{
             titre_bib.setText("evenements organisés :");
@@ -60,7 +66,9 @@ public class Library  extends BaseEvent{
         });
         buttOrg.setLeadComponent(org_label);
         Container buttInscri = new Container(new FlowLayout(CENTER));
-        Label inscri_label = new Label(FontImage.createMaterial(FontImage.MATERIAL_SUBSCRIPTIONS, new Style()));
+        inscri_label = new Label();
+        inscri_label.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_MEDIUM));
+        FontImage.setMaterialIcon(inscri_label, FontImage.MATERIAL_SUBSCRIPTIONS);
         inscri_label.addPointerPressedListener((l)->{
             titre_bib.setText("evenements inscris :");
             evenements.removeAll();
@@ -70,7 +78,9 @@ public class Library  extends BaseEvent{
         buttInscri.add(inscri_label);
         buttInscri.setLeadComponent(inscri_label);
         Container buttBookmark = new Container(new FlowLayout(CENTER));
-        Label bookmark_label = new Label(FontImage.createMaterial(FontImage.MATERIAL_BOOKMARK, new Style()));
+        bookmark_label = new Label();        
+        bookmark_label.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_MEDIUM));
+        FontImage.setMaterialIcon(bookmark_label, FontImage.MATERIAL_BOOKMARK);
         bookmark_label.addPointerPressedListener((l)->{
             titre_bib.setText("liste du favoris :");
             evenements.removeAll();
@@ -80,7 +90,7 @@ public class Library  extends BaseEvent{
         buttBookmark.add(bookmark_label);
         buttBookmark.setLeadComponent(bookmark_label);
         south.addAll(buttOrg, buttInscri, buttBookmark);
-        Container center_con = new Container(BoxLayout.y());
+        center_con = new Container(BoxLayout.y());
         center_con.addAll(titre_bib,evenements);
         center_con.setScrollableY(true);
         form.add(BorderLayout.SOUTH, south);

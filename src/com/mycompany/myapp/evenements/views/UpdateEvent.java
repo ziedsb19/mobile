@@ -53,7 +53,8 @@ public class UpdateEvent extends BaseEvent {
         description = new TextField(evenement.getDescription(),"description de l'evenements");
         description.setRows(2);
         
-        photo = new Button("ajouter image");
+        photo = new Button(" ajouter image",FontImage.MATERIAL_CAMERA,"photo");
+        photo.setUIID("primary_outline_button");
         Label photo_helper = new Label();
         if (evenement.getUrl_image() != null)
             photo_helper.setText("image existante");
@@ -64,6 +65,7 @@ public class UpdateEvent extends BaseEvent {
             System.out.println(file);
         });
         valider = new Button("valider");
+        valider.setUIID("primary_button");
         valider.addActionListener((l)->{
             if (testArgs()){
                 evenement.setTitre(titre.getText());

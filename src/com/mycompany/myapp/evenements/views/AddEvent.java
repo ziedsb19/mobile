@@ -5,6 +5,7 @@ import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import static com.codename1.ui.TextArea.DECIMAL;
@@ -56,7 +57,8 @@ public class AddEvent extends BaseEvent{
         prix.setConstraint(DECIMAL);
         billetsRestants = new TextField(null, "nombre de places");
         billetsRestants.setConstraint(NUMERIC);
-        photo = new Button("ajouter image");
+        photo = new Button(" ajouter image",FontImage.MATERIAL_CAMERA,"photo");
+        photo.setUIID("primary_outline_button");
         Label photo_helper = new Label();
         photo.addActionListener((event)->{
             file = Capture.capturePhoto();
@@ -65,6 +67,7 @@ public class AddEvent extends BaseEvent{
         });
         
         valider = new Button("valider");
+        valider.setUIID("primary_button");
         valider.addActionListener((event)->{
             if (testArgs()){
                 evenement.setTitre(titre.getText());
