@@ -14,6 +14,7 @@ import com.mycompany.myapp.Utilisateur;
         private String adresse;
         private int billets_restants;
         private int disponibilite;
+        private String latLng;
         private Date date_modification;
         private Utilisateur utilisateur;
         private HashSet<Image> listImages ;
@@ -187,6 +188,14 @@ import com.mycompany.myapp.Utilisateur;
 
     public void setListInscriptions(HashSet<Inscription> listInscriptions) {
         this.listInscriptions = listInscriptions;
+    }
+
+    public String getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(String latLng) {
+        this.latLng = latLng;
     }
     
     public void addImage (Image image){

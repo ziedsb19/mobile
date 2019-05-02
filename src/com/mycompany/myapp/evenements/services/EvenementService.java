@@ -198,6 +198,8 @@ public class EvenementService {
                 evenement.setPrix((double)eventEl.get("prix"));
             if (eventEl.get("billetsRestants") != null)
                 evenement.setBillets_restants((int)((double)eventEl.get("billetsRestants")));
+            if (eventEl.get("latLng")!=null)
+                evenement.setLatLng((String)eventEl.get("latLng"));
             Map<String,Object> dateEl = (Map)eventEl.get("date");
             evenement.setDate(new Date((long)((double)dateEl.get("timestamp"))*1000));
             Map<String,Object> user = (Map)eventEl.get("user");

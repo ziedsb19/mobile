@@ -27,8 +27,8 @@ public class Loggin extends BaseEvent{
         form.setUIID("Loggin");
         form.add(BorderLayout.NORTH, new Label(VarGlobales.getTheme().getImage("Logo.png"), "LogoLabel"));
         
-        TextField username = new TextField("", "Username", 20, TextField.ANY);
-        TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
+        TextField username = new TextField(null, "username");
+        TextField password = new TextField(null, "Password");
         username.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         Button signIn = new Button("Sign In");

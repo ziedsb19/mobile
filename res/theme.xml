@@ -223,17 +223,18 @@
         <val key="CheckBox.padUnit" value="2,2,2,2" />
         <val key="CheckBox.padding" value="1.0,1.0,1.0,1.0" />
         <val key="CheckBox.press#align" value="4" />
+        <val key="CheckBox.press#bgColor" value="0e1b4d" />
         <gradient key="CheckBox.press#bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="CheckBox.press#bgType" value="0" />
-        <border key="CheckBox.press#border" type="image" i1="OKGR.borderTop_1.png" i2="OKGR.borderBottom_1.png" i3="OKGR.borderLeft_1.png" i4="OKGR.borderRight_1.png" i5="OKGR.borderTopL_1.png" i6="OKGR.borderTopR_1.png" i7="OKGR.borderBottomL_1.png" i8="OKGR.borderBottomR_1.png" i9="OKGR.borderCenter_1.png" />
-        <val key="CheckBox.press#derive" value="CheckBox" />
-        <val key="CheckBox.press#fgColor" value="999999" />
+        <border key="CheckBox.press#border" type="line" millimeters="false" thickness="0.0" color="0" />
+        <val key="CheckBox.press#derive" value="Button" />
+        <val key="CheckBox.press#fgColor" value="ffffff" />
         <font key="CheckBox.press#font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.0" />
         <val key="CheckBox.press#marUnit" value="2,2,2,2" />
         <val key="CheckBox.press#margin" value="1.0,1.0,1.0,1.0" />
         <val key="CheckBox.press#padUnit" value="2,2,2,2" />
         <val key="CheckBox.press#padding" value="1.0,1.0,1.0,1.0" />
-        <val key="CheckBox.press#transparency" value="0" />
+        <val key="CheckBox.press#transparency" value="255" />
         <val key="CheckBox.sel#align" value="4" />
         <gradient key="CheckBox.sel#bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="CheckBox.sel#bgType" value="0" />
@@ -574,16 +575,17 @@
         <val key="RadioButton.padUnit" value="2,2,2,2" />
         <val key="RadioButton.padding" value="1.0,1.0,1.0,1.0" />
         <val key="RadioButton.press#align" value="4" />
+        <val key="RadioButton.press#bgColor" value="0e1b4d" />
         <gradient key="RadioButton.press#bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
         <val key="RadioButton.press#bgType" value="0" />
-        <border key="RadioButton.press#border" type="image" i1="OKGR.borderTop_1.png" i2="OKGR.borderBottom_1.png" i3="OKGR.borderLeft_1.png" i4="OKGR.borderRight_1.png" i5="OKGR.borderTopL_1.png" i6="OKGR.borderTopR_1.png" i7="OKGR.borderBottomL_1.png" i8="OKGR.borderBottomR_1.png" i9="OKGR.borderCenter_1.png" />
-        <val key="RadioButton.press#fgColor" value="999999" />
+        <border key="RadioButton.press#border" type="line" millimeters="false" thickness="0.0" color="0" />
+        <val key="RadioButton.press#fgColor" value="ffffff" />
         <font key="RadioButton.press#font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.0" />
         <val key="RadioButton.press#marUnit" value="2,2,2,2" />
         <val key="RadioButton.press#margin" value="1.0,1.0,1.0,1.0" />
         <val key="RadioButton.press#padUnit" value="2,2,2,2" />
         <val key="RadioButton.press#padding" value="1.0,1.0,1.0,1.0" />
-        <val key="RadioButton.press#transparency" value="0" />
+        <val key="RadioButton.press#transparency" value="255" />
         <val key="RadioButton.sel#align" value="4" />
         <val key="RadioButton.sel#bgColor" value="0" />
         <gradient key="RadioButton.sel#bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
@@ -811,6 +813,13 @@
         <val key="ToggleButton.sel#transparency" value="0" />
         <val key="bgColor" value="ffffff" />
         <border key="border" type="empty" />
+        <val key="custom_text_field.press#align" value="4" />
+        <border key="custom_text_field.press#border" type="empty" />
+        <val key="custom_text_field.press#fgColor" value="ffffff" />
+        <val key="custom_text_field.press#margin" value="0.0,0.0,0.0,0.0" />
+        <val key="custom_text_field.press#padUnit" value="2,2,2,2" />
+        <val key="custom_text_field.press#padding" value="2.0,2.0,2.0,2.0" />
+        <val key="custom_text_field.press#transparency" value="0" />
         <val key="danger_button.align" value="4" />
         <val key="danger_button.bgColor" value="ff4444" />
         <val key="danger_button.fgColor" value="ffffff" />
@@ -818,6 +827,14 @@
         <val key="danger_button.margin" value="1.5,1.5,1.0,1.0" />
         <val key="danger_button.padUnit" value="2,2,2,2" />
         <val key="danger_button.padding" value="1.5,1.5,2.0,2.0" />
+        <val key="danger_button.press#align" value="4" />
+        <val key="danger_button.press#bgColor" value="ff4444" />
+        <val key="danger_button.press#fgColor" value="ffffff" />
+        <val key="danger_button.press#marUnit" value="2,2,2,2" />
+        <val key="danger_button.press#margin" value="1.5,1.5,1.0,1.0" />
+        <val key="danger_button.press#padUnit" value="2,2,2,2" />
+        <val key="danger_button.press#padding" value="1.5,1.5,2.0,2.0" />
+        <val key="danger_button.press#transparency" value="255" />
         <val key="danger_button.transparency" value="255" />
         <val key="event_cont.bgColor" value="f4f9f4" />
         <border key="event_cont.border" type="empty" />
@@ -849,6 +866,14 @@
         <val key="primary_button.margin" value="1.5,1.5,1.0,1.0" />
         <val key="primary_button.padUnit" value="2,2,2,2" />
         <val key="primary_button.padding" value="1.5,1.5,2.0,2.0" />
+        <val key="primary_button.press#align" value="4" />
+        <val key="primary_button.press#bgColor" value="0e1b4d" />
+        <val key="primary_button.press#fgColor" value="ffffff" />
+        <val key="primary_button.press#marUnit" value="2,2,2,2" />
+        <val key="primary_button.press#margin" value="1.5,1.5,1.0,1.0" />
+        <val key="primary_button.press#padUnit" value="2,2,2,2" />
+        <val key="primary_button.press#padding" value="1.5,1.5,2.0,2.0" />
+        <val key="primary_button.press#transparency" value="255" />
         <val key="primary_button.transparency" value="255" />
         <val key="primary_outline_button.align" value="4" />
         <val key="primary_outline_button.bgColor" value="ffffff" />
@@ -858,6 +883,15 @@
         <val key="primary_outline_button.margin" value="1.5,1.5,1.0,1.0" />
         <val key="primary_outline_button.padUnit" value="2,2,2,2" />
         <val key="primary_outline_button.padding" value="1.5,1.5,2.0,2.0" />
+        <val key="primary_outline_button.press#align" value="4" />
+        <val key="primary_outline_button.press#bgColor" value="ffffff" />
+        <border key="primary_outline_button.press#border" type="line" millimeters="false" thickness="1.0" color="924493" />
+        <val key="primary_outline_button.press#fgColor" value="0e1b4d" />
+        <val key="primary_outline_button.press#marUnit" value="2,2,2,2" />
+        <val key="primary_outline_button.press#margin" value="1.5,1.5,1.0,1.0" />
+        <val key="primary_outline_button.press#padUnit" value="2,2,2,2" />
+        <val key="primary_outline_button.press#padding" value="1.5,1.5,2.0,2.0" />
+        <val key="primary_outline_button.press#transparency" value="255" />
         <val key="primary_outline_button.transparency" value="255" />
         <val key="secondary_button.align" value="4" />
         <val key="secondary_button.bgColor" value="3f729b" />
@@ -866,6 +900,14 @@
         <val key="secondary_button.margin" value="1.5,1.5,1.0,1.0" />
         <val key="secondary_button.padUnit" value="2,2,2,2" />
         <val key="secondary_button.padding" value="1.5,1.5,2.0,2.0" />
+        <val key="secondary_button.press#align" value="4" />
+        <val key="secondary_button.press#bgColor" value="3f729b" />
+        <val key="secondary_button.press#fgColor" value="ffffff" />
+        <val key="secondary_button.press#marUnit" value="2,2,2,2" />
+        <val key="secondary_button.press#margin" value="1.5,1.5,1.0,1.0" />
+        <val key="secondary_button.press#padUnit" value="2,2,2,2" />
+        <val key="secondary_button.press#padding" value="1.5,1.5,2.0,2.0" />
+        <val key="secondary_button.press#transparency" value="255" />
         <val key="secondary_button.transparency" value="255" />
         <border key="sel#border" type="empty" />
         <val key="transparency" value="0" />

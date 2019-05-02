@@ -62,7 +62,7 @@ public class EvenementsView extends BaseEvent {
         filterContainer.addAll(gratuit, payant);
         topFilter = new Container(BoxLayout.y()); 
         setFilter();
-        TextField searchText = new TextField();
+        TextField searchText = new TextField(null, "chercher par titre ...");
         searchText.setHidden(true);
         //*********************************************************
         Button search = new Button(FontImage.MATERIAL_SEARCH);
@@ -77,6 +77,7 @@ public class EvenementsView extends BaseEvent {
                 searchText.setHidden(false);
             else {
                 searchText.setHidden(true);
+                searchText.setText(null);
                 evenements.removeAll();
                 setEvents(listEvenements);
             }

@@ -2,7 +2,9 @@ package com.mycompany.myapp.evenements.views;
 
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
+import com.codename1.googlemaps.MapContainer;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.maps.Coord;
 import com.codename1.ui.Button;
 import static com.codename1.ui.CN.CENTER;
 import static com.codename1.ui.CN.LEFT;
@@ -43,9 +45,7 @@ public class OneEvent extends BaseEvent{
         evenement = es.getEventById(VarGlobales.getEventId());
         setEvent();
         setPrivileges();
-        for (Categorie c : evenement.getListCategories()){
-            System.out.println(c.getName());
-        }
+        setMap();
     }
     
     public void setForm(){
@@ -115,7 +115,7 @@ public class OneEvent extends BaseEvent{
         Container billetsCon = new Container(new FlowLayout(LEFT, CENTER));
         Label billets = new Label(evenement.getBillets_restants()+" billets");
         billets.setUIID("event_label");
-        billetsCon.addAll(new Label("Date : ",FontImage.createMaterial(FontImage.MATERIAL_BOOK, new Style())), billets);
+        billetsCon.addAll(new Label("Billets : ",FontImage.createMaterial(FontImage.MATERIAL_BOOK, new Style())), billets);
         
         
         String categories = "";
@@ -126,9 +126,9 @@ public class OneEvent extends BaseEvent{
         Container categoriesCont = new Container(new FlowLayout(LEFT, CENTER));
         SpanLabel categorie_label = new SpanLabel(categories);
         categorie_label.setUIID("event_label");
-        categoriesCont.addAll(new Label("tags : ",FontImage.createMaterial(FontImage.MATERIAL_LOCAL_OFFER, new Style())), categorie_label);
-        
+        categoriesCont.addAll(new Label("tags : ",FontImage.createMaterial(FontImage.MATERIAL_LOCAL_OFFER, new Style())), categorie_label);  
         middle.addAll(titre_middle, userCon, adresseCon, dateCon, prixCon, billetsCon, categoriesCont);
+       
         //************************************************************************
         Container bottom = new Container(BoxLayout.y());
         Label description_Titre = new Label("Description de l'evenement :");
@@ -232,5 +232,26 @@ public class OneEvent extends BaseEvent{
         }
         operations.addAll(priv_title,priv);
         form.add(operations);
+    }
+    
+    private void setMap(){
+        Container map = new Container(BoxLayout.y());
+        Label map_titre = new Label ("map :");
+        FontImage.setMaterialIcon(map_titre, FontImage.MATERIAL_SATELLITE);
+        map_titre.setUIID("event_titre");
+        map.add(map_titre);
+        if (evenement.getLatLng()!= null){        
+            MapContainer mapCnt = new MapContainer("AIzaSyCdvU3nYMT74CA2mGDKJLQt07Ea-bg1Ql0");
+            String latLng = evenement.getLatLng();
+            float lat =Float.parseFloat(latLng.substring(0, latLng.indexOf("/")));
+            float lng =Float.parseFloat(latLng.substring(latLng.indexOf("/")+1, latLng.length()));
+            mapCnt.zoom(new Coord(lat, lng), 13);
+            mapCnt.setHeight(200);
+            map.add(mapCnt);
+        }
+        else 
+            map.add(new Label("pas de coordonnés poue cette adresse "));
+        
+        form.add(map);
     }
 }
