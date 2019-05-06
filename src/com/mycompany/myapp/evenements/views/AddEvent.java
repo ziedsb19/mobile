@@ -1,6 +1,8 @@
 package com.mycompany.myapp.evenements.views;
 
 import com.codename1.capture.Capture;
+import com.codename1.components.InfiniteProgress;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Container;
@@ -19,9 +21,14 @@ import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
+import java.util.Date;
 import java.util.List;
 
 public class AddEvent extends BaseEvent{
+    
+    //FIXME: date avant now()
+    
+    //TODO: supprimer image
     
     private Form form;
     private Toolbar tb;
@@ -60,9 +67,20 @@ public class AddEvent extends BaseEvent{
         photo = new Button(" ajouter image",FontImage.MATERIAL_CAMERA,"photo");
         photo.setUIID("primary_outline_button");
         Label photo_helper = new Label();
+        
+        photo_helper.addPointerPressedListener((l)->{
+            file = null;
+            photo_helper.setText(null);
+        });
+        
         photo.addActionListener((event)->{
             file = Capture.capturePhoto();
-            photo_helper.setText("image ajouté");
+            if (file != null){
+                photo_helper.setText("image ajouté X");
+            }
+            else{ 
+                photo_helper.setText(null);
+            }
             form.revalidate();
         });
         
@@ -80,6 +98,7 @@ public class AddEvent extends BaseEvent{
                 evenement.setDate(date.getDate());
                 evenement.setUtilisateur(VarGlobales.getUtilisateur());
                 //******************************************************************
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 int eventId = es.addEvent(evenement);
                 if (eventId != 0){
                     if (file != null)
@@ -108,12 +127,13 @@ public class AddEvent extends BaseEvent{
     } 
     
     public boolean testArgs(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         if (titre.getText() == null ||titre.getText().isEmpty() || adresse.getText() == null || adresse.getText().isEmpty() || date.getText() == null  )
         {
             Dialog.show("erreur !", "vous devez remplissez tous les champs obligatoires (titre, adresse, date)", "ok", null);
             return false;
         }
-        if (date.getDate() == null){
+        if (formatter.format(date.getDate()).compareTo(formatter.format(new Date()))<=0){
             Dialog.show("erreur !", "date invalide ", "ok", null); 
             return false;
         }

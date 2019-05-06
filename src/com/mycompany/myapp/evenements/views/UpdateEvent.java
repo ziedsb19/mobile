@@ -1,6 +1,8 @@
 package com.mycompany.myapp.evenements.views;
 
 import com.codename1.capture.Capture;
+import com.codename1.components.InfiniteProgress;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Container;
@@ -16,10 +18,13 @@ import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
+import java.util.Date;
 import java.util.List;
 
 public class UpdateEvent extends BaseEvent {
     
+    //FIXME: ability to delete image
+
     private Form form;
     private Toolbar tb;
     private TextField titre;
@@ -58,11 +63,21 @@ public class UpdateEvent extends BaseEvent {
         Label photo_helper = new Label();
         if (evenement.getUrl_image() != null)
             photo_helper.setText("image existante");
+        photo_helper.addPointerPressedListener((l)->{
+            if (photo_helper.getText().equals("image ajouté X")){
+                file = null;
+                photo_helper.setText(null);
+            }
+        });
         photo.addActionListener((event)->{
             file = Capture.capturePhoto();
-            photo_helper.setText("image ajouté");
+            if (file != null){
+                photo_helper.setText("image ajouté X");
+            }
+            else{ 
+                photo_helper.setText(null);
+            }
             form.revalidate();
-            System.out.println(file);
         });
         valider = new Button("valider");
         valider.setUIID("primary_button");
@@ -72,9 +87,12 @@ public class UpdateEvent extends BaseEvent {
                 evenement.setAdresse(adresse.getText());
                 evenement.setDate(date.getDate());
                 evenement.setDescription(description.getText());
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 if (es.updateEvent(evenement)){
                     if (file != null)
                         es.uploadImage(file, evenement.getId());
+                    else if (file == null && evenement.getUrl_image()!=null) 
+                        es.deleteImage(evenement);
                     if (Dialog.show("mis à jour", "mis à jour de l'evenement avec succés", "ok", null))
                         new OneEvent().getForm().show();
                 }
@@ -90,12 +108,13 @@ public class UpdateEvent extends BaseEvent {
     }
     
         public boolean testArgs(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");    
         if (titre.getText() == null ||titre.getText().isEmpty() || adresse.getText() == null || adresse.getText().isEmpty() || date.getText() == null  )
         {
             Dialog.show("erreur !", "vous devez remplissez tous les champs obligatoires (titre, adresse, date)", "ok", null);
             return false;
         }
-        if (date.getDate() == null){
+        if (formatter.format(date.getDate()).compareTo(formatter.format(new Date()))<=0){
             Dialog.show("erreur !", "date invalide ", "ok", null); 
             return false;
         }

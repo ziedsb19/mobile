@@ -79,6 +79,12 @@ public class EvenementService {
         return new String(con.getResponseData()).equals("yes")? true:false;
     }
     
+    public boolean deleteImage(Evenement event) {
+        con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/deleteImage/"+event.getId());
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return new String(con.getResponseData()).equals("yes")? true:false;        
+    }
+    
     public String inscriEvent(Evenement event, Utilisateur u){
         con.setUrl("http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/inscri/"+event.getId()+"/"+u.getId());
         NetworkManager.getInstance().addToQueueAndWait(con);

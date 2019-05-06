@@ -1,15 +1,14 @@
 package com.mycompany.myapp.evenements.views;
 
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.ComboBox;
-import static com.codename1.ui.Component.BOTTOM;
 import static com.codename1.ui.Component.CENTER;
 import static com.codename1.ui.Component.RIGHT;
-import static com.codename1.ui.Component.TOP;
 import com.codename1.ui.Container;
-import com.codename1.ui.Display;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
@@ -36,6 +35,8 @@ import java.util.List;
 
 public class EvenementsView extends BaseEvent {
     
+    //NOTE: x button when press on search ..... fixe adresse size
+
     private Form form ;
     private Toolbar tb;
     private EvenementService es;
@@ -73,8 +74,9 @@ public class EvenementsView extends BaseEvent {
         Container searchBorder = new Container(new BorderLayout());
         searchBorder.add(BorderLayout.SOUTH,searchCont);
         search.addActionListener((l)->{
-            if (searchText.isHidden())
+            if (searchText.isHidden()){
                 searchText.setHidden(false);
+            }
             else {
                 searchText.setHidden(true);
                 searchText.setText(null);
@@ -246,8 +248,8 @@ public class EvenementsView extends BaseEvent {
             Label prix_label = new Label();
             prix_label.getAllStyles().setFgColor(0x0000ff); 
             prix_label.addPointerPressedListener((l)->{
-                System.out.println("yes");
                 VarGlobales.setEventId(e.getId());
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 new OneEvent().getForm().show();
             });
             if (prix>0){

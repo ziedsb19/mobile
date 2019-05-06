@@ -1,5 +1,6 @@
 package com.mycompany.myapp;
 
+import com.codename1.components.InfiniteProgress;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -17,8 +18,10 @@ import com.mycompany.myapp.evenements.views.BaseEvent;
 import com.mycompany.myapp.evenements.views.EvenementsView;
 import java.io.IOException;
 import java.util.Map;
-
+ 
 public class Loggin extends BaseEvent{
+ 
+    //FIXME: text inputs colors
     
     private Form form;
     
@@ -49,8 +52,10 @@ public class Loggin extends BaseEvent{
             if (username.getText() == null ||  username.getText().isEmpty() || password.getText() == null || password.getText().isEmpty()){
                 Dialog.show("loggin", "veuillez remplir tous les champs ", "ok", null);
             }
-            else 
+            else {
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 loggin(username.getText().trim(), password.getText().trim());
+            }
         });
     }
     

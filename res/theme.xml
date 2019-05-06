@@ -820,6 +820,11 @@
         <val key="custom_text_field.press#padUnit" value="2,2,2,2" />
         <val key="custom_text_field.press#padding" value="2.0,2.0,2.0,2.0" />
         <val key="custom_text_field.press#transparency" value="0" />
+        <val key="custom_tf.align" value="4" />
+        <border key="custom_tf.border" type="line" millimeters="false" thickness="1.0" color="16777215" />
+        <val key="custom_tf.fgColor" value="ffffff" />
+        <val key="custom_tf.marUnit" value="0,2,0,1" />
+        <val key="custom_tf.margin" value="0.0,0.0,2.0,2.0" />
         <val key="danger_button.align" value="4" />
         <val key="danger_button.bgColor" value="ff4444" />
         <val key="danger_button.fgColor" value="ffffff" />

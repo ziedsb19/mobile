@@ -1,6 +1,7 @@
 package com.mycompany.myapp.evenements.views;
 
 import com.codename1.components.ImageViewer;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import com.codename1.googlemaps.MapContainer;
 import com.codename1.l10n.SimpleDateFormat;
@@ -12,7 +13,6 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
-import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -32,6 +32,9 @@ import java.io.IOException;
 
 public class OneEvent extends BaseEvent{
     
+    //FIXME: delete button 
+    //NOTE: size of map
+
     private Form  form ;
     private Toolbar tb;
     private EvenementService es ;
@@ -158,16 +161,20 @@ public class OneEvent extends BaseEvent{
             Button update = new Button(" update ",FontImage.MATERIAL_UPDATE,"update");
             update.setUIID("secondary_button");
             update.addActionListener((l)->{
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 new UpdateEvent().getForm().show();
             });
             Button delete = new Button(" delete",FontImage.MATERIAL_DELETE,"delete");
            
-            delete.setUIID("danger_button");
+            delete.setUIID("secondary_button");
             delete.addActionListener((l)->{
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 if (es.deleteEvent(evenement)){
                     if (Dialog.show("suppression", "evenement supprimé avec succes ", "ok", null))
                         new EvenementsView().getForm().show();             
                 }
+                else 
+                    ip.dispose();
             });
             priv.addAll(delete, update);
         }

@@ -1,9 +1,11 @@
 package com.mycompany.myapp.evenements.views;
 
+import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
 import com.codename1.l10n.SimpleDateFormat;
 import static com.codename1.ui.CN.CENTER;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Font;
 import com.codename1.ui.FontImage;
@@ -145,8 +147,8 @@ public class Library  extends BaseEvent{
             Label prix_label = new Label();
             prix_label.getAllStyles().setFgColor(0x0000ff); 
             prix_label.addPointerPressedListener((l)->{
-                System.out.println("yes");
                 VarGlobales.setEventId(e.getId());
+                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 new OneEvent().getForm().show();
             });
             if (prix>0){
