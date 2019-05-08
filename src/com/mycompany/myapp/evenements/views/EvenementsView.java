@@ -42,7 +42,7 @@ public class EvenementsView extends BaseEvent {
     private EvenementService es;
     private List<Evenement> listEvenements;
     private EncodedImage enc;
-    private String urlImage = "http://localhost/pi/tech_events/web/images/evenements/";
+    private String urlImage = "http://"+VarGlobales.path+"/pi/tech_events/web/images/evenements/";
     private Container evenements;
     private TextField searchBar;
     private Container topFilter;

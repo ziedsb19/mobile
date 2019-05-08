@@ -3,12 +3,12 @@ package com.mycompany.myapp.evenements.views;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.SpanLabel;
+import com.codename1.fingerprint.Fingerprint;
 import com.codename1.googlemaps.MapContainer;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.maps.Coord;
 import com.codename1.ui.Button;
 import static com.codename1.ui.CN.CENTER;
-import static com.codename1.ui.CN.LEFT;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
@@ -22,7 +22,6 @@ import com.codename1.ui.URLImage;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
-import com.codename1.ui.plaf.Style;
 import com.mycompany.myapp.VarGlobales;
 import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
@@ -40,7 +39,7 @@ public class OneEvent extends BaseEvent{
     private EvenementService es ;
     private Evenement evenement;
     private EncodedImage enc ;
-    private final String urlI = "http://localhost/pi/tech_events/web/images/evenements/";
+    private final String urlI = "http://"+VarGlobales.path+"/pi/tech_events/web/images/evenements/";
     
     public OneEvent(){
         setForm();
@@ -71,6 +70,7 @@ public class OneEvent extends BaseEvent{
         Container top = new Container(BoxLayout.y());
         Container vtop = new Container(new FlowLayout(CENTER));
         SpanLabel titre = new SpanLabel(evenement.getTitre().toUpperCase());
+        titre.getTextAllStyles().setFgColor(0x0e1b4d);
         ImageViewer iv = new ImageViewer();
         iv.setWidth(Display.getInstance().getDisplayWidth());
         String urlImage ;
@@ -95,43 +95,61 @@ public class OneEvent extends BaseEvent{
         FontImage.setMaterialIcon(titre_middle, FontImage.MATERIAL_INFO);
         titre_middle.setUIID("event_titre");
         
-        Container userCon = new Container(new FlowLayout(LEFT, CENTER));
+        Container userCon = new Container(BoxLayout.x());
         Label utilisateur = new Label(evenement.getUtilisateur().getUsername());
         utilisateur.setUIID("event_label");
-        userCon.addAll(new Label("créée par: ",FontImage.createMaterial(FontImage.MATERIAL_PERSON, new Style())), utilisateur);
+        Label utilisateur_lab = new Label("créée par: ");
+        FontImage.setMaterialIcon(utilisateur_lab, FontImage.MATERIAL_PERSON);
+        //utilisateur_lab.setW(300);
+        userCon.addAll(utilisateur_lab, utilisateur);
 
         Container adresseCon = new Container(BoxLayout.x());
         Label adresse = new Label(evenement.getAdresse());
         adresse.setUIID("event_label");
-        adresseCon.addAll(new Label("Adresse: ",FontImage.createMaterial(FontImage.MATERIAL_PLACE, new Style())), adresse);
+        Label adresse_lab = new Label("Adresse: ");
+        FontImage.setMaterialIcon(adresse_lab, FontImage.MATERIAL_PLACE);
+        //adresse_lab.setWidth(300);
+        adresseCon.addAll(adresse_lab, adresse);
         
-        Container dateCon = new Container(new FlowLayout(LEFT, CENTER));
+        Container dateCon = new Container(BoxLayout.x());
         Label date = new Label(dateFormater.format(evenement.getDate()));
         date.setUIID("event_label");
-        dateCon.addAll(new Label("Date : ",FontImage.createMaterial(FontImage.MATERIAL_ACCESS_TIME, new Style())), date);
+        Label date_lab = new Label("Date : ");
+        FontImage.setMaterialIcon(date_lab, FontImage.MATERIAL_ACCESS_TIME);
+        //date_lab.setWidth(300);
+        dateCon.addAll(date_lab, date);
 
-        Container prixCon = new Container(new FlowLayout(LEFT, CENTER));
+        Container prixCon = new Container(BoxLayout.x());
         Label prix = new Label(evenement.getPrix()+" $");
         prix.setUIID("event_label");
-        prixCon.addAll(new Label("prix : ",FontImage.createMaterial(FontImage.MATERIAL_CREDIT_CARD, new Style())), prix);
+        Label prix_lab = new Label("prix : ");
+        FontImage.setMaterialIcon(prix_lab, FontImage.MATERIAL_CREDIT_CARD);
+        //prix_lab.setWidth(300);
+        prixCon.addAll(prix_lab, prix);
                 
-        Container billetsCon = new Container(new FlowLayout(LEFT, CENTER));
+        Container billetsCon = new Container(BoxLayout.x());
         Label billets = new Label(evenement.getBillets_restants()+" billets");
         billets.setUIID("event_label");
-        billetsCon.addAll(new Label("Billets : ",FontImage.createMaterial(FontImage.MATERIAL_BOOK, new Style())), billets);
+        Label billets_lab = new Label("Billets : ");
+        FontImage.setMaterialIcon(billets_lab, FontImage.MATERIAL_BOOK);
+        //billets_lab(300);
+        billetsCon.addAll(billets_lab, billets);
         
         
         String categories = "";
         for (Categorie c : evenement.getListCategories()){
-            categories += " #"+c.getName();
+            categories += "#"+c.getName()+" ";
         }
         
-        Container categoriesCont = new Container(new FlowLayout(LEFT, CENTER));
+        Container categoriesCont = new Container(BoxLayout.x());
         SpanLabel categorie_label = new SpanLabel(categories);
         categorie_label.setUIID("event_label");
-        categoriesCont.addAll(new Label("tags : ",FontImage.createMaterial(FontImage.MATERIAL_LOCAL_OFFER, new Style())), categorie_label);  
+        Label tag_lab = new Label("tags: ");
+        FontImage.setMaterialIcon(tag_lab, FontImage.MATERIAL_LOCAL_OFFER);
+        //tag_lab.setWidth(300);
+        categoriesCont.addAll(tag_lab, categorie_label);          
         middle.addAll(titre_middle, userCon, adresseCon, dateCon, prixCon, billetsCon, categoriesCont);
-       
+        middle.setSameWidth(date_lab,adresse_lab,utilisateur_lab,prix_lab,billets_lab,tag_lab);
         //************************************************************************
         Container bottom = new Container(BoxLayout.y());
         Label description_Titre = new Label("Description de l'evenement :");
@@ -168,13 +186,29 @@ public class OneEvent extends BaseEvent{
            
             delete.setUIID("secondary_button");
             delete.addActionListener((l)->{
-                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
-                if (es.deleteEvent(evenement)){
-                    if (Dialog.show("suppression", "evenement supprimé avec succes ", "ok", null))
-                        new EvenementsView().getForm().show();             
+                if (Fingerprint.isAvailable()){
+                    Fingerprint.scanFingerprint("supprimer l'evenement !!",
+                        success->{
+                            Dialog ip = new InfiniteProgress().showInfiniteBlocking();
+                            if (es.deleteEvent(evenement)){
+                                if (Dialog.show("suppression", "evenement supprimé avec succes ", "ok", null))
+                                new EvenementsView().getForm().show();             
+                            }
+                        },
+                            (sender, err, errorCode, errorMessage) ->{
+                                Dialog.show("suppression", "erreur !", "ok",null);
+                                form.refreshTheme();
+                            });
                 }
-                else 
-                    ip.dispose();
+                else {
+                    Dialog ip = new InfiniteProgress().showInfiniteBlocking();
+                     if (es.deleteEvent(evenement)){
+                        if (Dialog.show("suppression", "evenement supprimé avec succes ", "ok", null))
+                            new EvenementsView().getForm().show();             
+                    }
+                    else 
+                        ip.dispose();
+                    }
             });
             priv.addAll(delete, update);
         }
@@ -252,8 +286,8 @@ public class OneEvent extends BaseEvent{
             String latLng = evenement.getLatLng();
             float lat =Float.parseFloat(latLng.substring(0, latLng.indexOf("/")));
             float lng =Float.parseFloat(latLng.substring(latLng.indexOf("/")+1, latLng.length()));
-            mapCnt.zoom(new Coord(lat, lng), 13);
-            mapCnt.setHeight(200);
+            mapCnt.setCameraPosition(new Coord(lat, lng));
+            mapCnt.setPreferredH((Display.getInstance().getDisplayHeight()/4)*3);
             map.add(mapCnt);
         }
         else 

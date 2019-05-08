@@ -24,8 +24,6 @@ import com.mycompany.myapp.evenements.entites.Categorie;
 import com.mycompany.myapp.evenements.entites.Evenement;
 import com.mycompany.myapp.evenements.services.EvenementService;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Library  extends BaseEvent{
@@ -37,7 +35,7 @@ public class Library  extends BaseEvent{
     private List<Evenement> listEvenementsInscris;
     private List<Evenement> listEvenementsFvoris;
     private EncodedImage enc;
-    private String urlImage = "http://localhost/pi/tech_events/web/images/evenements/";
+    private String urlImage = "http://"+VarGlobales.path+"/pi/tech_events/web/images/evenements/";
     private Container evenements;
     private Label org_label;
     private Label inscri_label;
@@ -120,6 +118,7 @@ public class Library  extends BaseEvent{
                 urlImage2 = urlImage+e.getUrl_image();
             else
                 urlImage2 = urlImage+"default.png";
+            System.out.println(urlImage2);
             try {
                 enc = enc.create("/load.png");
                 Image img = URLImage.createToStorage(enc, urlImage2, urlImage2);

@@ -1,10 +1,14 @@
 package com.mycompany.myapp;
 
 import com.codename1.components.InfiniteProgress;
+import com.codename1.fingerprint.Fingerprint;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
+import com.codename1.nui.NTextField;
+import com.codename1.sensors.SensorListener;
+import com.codename1.sensors.SensorsManager;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -31,11 +35,19 @@ public class Loggin extends BaseEvent{
         form.add(BorderLayout.NORTH, new Label(VarGlobales.getTheme().getImage("Logo.png"), "LogoLabel"));
         
         TextField username = new TextField(null, "username");
+        username.setConstraint(TextField.USERNAME);
         TextField password = new TextField(null, "Password");
+        password.setConstraint(TextField.PASSWORD);
         username.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         Button signIn = new Button("Sign In");
         Button signUp = new Button("Sign Up");
+        signUp.addActionListener((l)->{
+            if (Fingerprint.isAvailable())
+            Fingerprint.scanFingerprint("valider !!", success->{Dialog.show("yes", "yes", "yes","yes");},
+                (sender, err, errorCode, errorMessage) ->{Dialog.show("no", "no", "no","no");});
+        
+        });
         signUp.setUIID("Link");
         Label doneHaveAnAccount = new Label("Don't have an account?");
         
@@ -53,7 +65,6 @@ public class Loggin extends BaseEvent{
                 Dialog.show("loggin", "veuillez remplir tous les champs ", "ok", null);
             }
             else {
-                Dialog ip = new InfiniteProgress().showInfiniteBlocking();
                 loggin(username.getText().trim(), password.getText().trim());
             }
         });
@@ -64,8 +75,9 @@ public class Loggin extends BaseEvent{
     }
 
     private void loggin(String username, String password) {
+        Dialog ip = new InfiniteProgress().showInfiniteBlocking();
         ConnectionRequest cr = new ConnectionRequest(""
-                + "http://localhost/pi/tech_events/web/app_dev.php/evenement/mobile/loggin?username="+username+"&password="+password, false);
+                + "http://"+VarGlobales.path+"/pi/tech_events/web/evenement/mobile/loggin?username="+username+"&password="+password, false);
         NetworkManager.getInstance().addToQueueAndWait(cr);
         if (!new String(cr.getResponseData()).equals("no")){
             JSONParser json = new JSONParser();
@@ -83,8 +95,10 @@ public class Loggin extends BaseEvent{
             } catch (IOException ex) {
             }
         }
-        else
+        else{
             Dialog.show("loggin", "mauvais coordonnées", "ok", null);
+            ip.dispose();
+        }
     }
     
 }

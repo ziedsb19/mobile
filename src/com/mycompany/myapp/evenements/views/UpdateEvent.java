@@ -2,6 +2,7 @@ package com.mycompany.myapp.evenements.views;
 
 import com.codename1.capture.Capture;
 import com.codename1.components.InfiniteProgress;
+import com.codename1.ext.filechooser.FileChooser;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.CheckBox;
@@ -70,14 +71,20 @@ public class UpdateEvent extends BaseEvent {
             }
         });
         photo.addActionListener((event)->{
-            file = Capture.capturePhoto();
-            if (file != null){
-                photo_helper.setText("image ajouté X");
-            }
-            else{ 
-                photo_helper.setText(null);
-            }
-            form.revalidate();
+            FileChooser.showOpenDialog("image/gif,.png,image/png,.jpg,image/jpg,.tif,image/tif,.jpeg", l->{
+                try {
+                    file = (String)l.getSource();
+                    if (file != null){
+                        photo_helper.setText("image ajouté X");
+                    }
+                    else{ 
+                        photo_helper.setText(null);
+                    }
+                    form.revalidate();  
+                }
+                catch (Exception ex){}
+            });
+           
         });
         valider = new Button("valider");
         valider.setUIID("primary_button");

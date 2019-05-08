@@ -7,6 +7,7 @@ public class VarGlobales {
     private static Utilisateur utilisateur = null;
     private static int eventId;
     private static Resources theme;
+    public static String  path = "192.168.1.5";
     
     public static Utilisateur getUtilisateur(){
         return utilisateur;
